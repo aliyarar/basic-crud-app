@@ -44,6 +44,11 @@ export default {
             return{
             }
         },
+          methods:{
+            updateEmitIndex(){
+                this.$emit('updateEmitIndex',this.index)
+            },
+          }
 }
 </script>
 <style>

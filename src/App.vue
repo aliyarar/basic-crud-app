@@ -15,7 +15,22 @@
             :modelBirthDay="item[3]" 
             :modelAbout="item[4]" 
             :modelPic="item[5]" 
-            :tags="item[6]" />
+            :tags="item[6]" 
+             @updateEmitIndex="activeIndex($event)" 
+             />
+            <UpdateModelCard
+             :modelName="card[activeNumber][0]" 
+            :modelJob="card[activeNumber][1]" 
+            :modelNationality="card[activeNumber][2]"                           
+            :modelBirthDay="card[activeNumber][3]" 
+            :modelAbout="card[activeNumber][4]" 
+            :modelPic="card[activeNumber][5]" 
+            :tags="card[activeNumber][6]" 
+            v-if="showModel"                           
+            @closeModel="updateOkey($event)" 
+            @hideUpdateModel="hideUpdateModel()"
+            :key="randomKey"
+            />
           </b-col>
       </b-row>
     </b-container>
@@ -31,14 +46,26 @@ export default {
   },
   data(){
     return{
-      card:[]
+      card:[],
+      showModel:false,
+      activeNumber: -1,
     }
   },
   methods:{
     updateCard(e){
       this.card.push(e);
       console.log(e);
-    }
+    },
+    activeIndex(e){
+      this.showModel = true;
+      this.activeNumber = e;
+      console.log(e)
+    },
+    updateOkey(e){
+      this.card.splice(this.activeNumber,1,e);
+      this.showModel = false;
+      this.activeNumber = -1;
+    },
   }
 
 };
