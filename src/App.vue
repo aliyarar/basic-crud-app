@@ -2,11 +2,12 @@
   <div>
     <b-container class="bv-example-row">
       <b-row>
-        <b-col sm="4">
+        <b-col sm="4" class="addingModel">
           <AddRoleModel @fromAddRoleModel="updateCard($event)"/>
         </b-col>
-        <b-col sm="8"> 
-          <ModelCard v-for="(item,index) in card" 
+      <transition-group sm="12" class="role-model" name="role-model" tag="b-col">
+          <ModelCard 
+            v-for="(item,index) in card" 
             :key="index" 
             :index="index" 
             :modelName="item[0]" 
@@ -16,10 +17,11 @@
             :modelAbout="item[4]" 
             :modelPic="item[5]" 
             :tags="item[6]" 
-             @updateEmitIndex="activeIndex($event)" 
-             />
-            <UpdateModelCard
-             :modelName="card[activeNumber][0]" 
+            @updateEmitIndex="activeIndex($event)" 
+            @deleteModelOpen="deleteModelOpen($event)"
+            />
+          <UpdateModelCard 
+            :modelName="card[activeNumber][0]" 
             :modelJob="card[activeNumber][1]" 
             :modelNationality="card[activeNumber][2]"                           
             :modelBirthDay="card[activeNumber][3]" 
@@ -31,7 +33,15 @@
             @hideUpdateModel="hideUpdateModel()"
             :key="randomKey"
             />
-          </b-col>
+          <DeleteModelCard 
+            v-if="showModelDelete" 
+            :index="activeNumber" 
+            @deleteModel="deleteModel()"
+            @deleteModelHide="deleteModelHide()"
+            :key="randomKey"
+            />
+        
+        </transition-group>
       </b-row>
     </b-container>
   </div>
@@ -48,7 +58,9 @@ export default {
     return{
       card:[],
       showModel:false,
+      showModelDelete:false,
       activeNumber: -1,
+      randomKey: Math.random()
     }
   },
   methods:{
@@ -66,9 +78,52 @@ export default {
       this.showModel = false;
       this.activeNumber = -1;
     },
+    deleteModelOpen(e){
+      this.showModelDelete= true;
+      this.activeNumber = e;
+    },
+    deleteModel(){
+      console.log(this.activeNumber)
+      this.card.splice(this.activeNumber,1);
+       this.showModelDelete = false;
+      this.activeNumber = -1;
+    },
+      deleteModelHide(){
+      this.showModelDelete = false;
+    },
+    hideUpdateModel(){
+      this.showModel = false
+    }
   }
 
 };
 </script>
 
-
+<style>  
+  .addingModel{
+    margin-left: 30px;
+  }
+ .role-model{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 40px;
+    backface-visibility: hidden;
+    transform-origin: 10% 50%;
+    z-index: 1;
+ } 
+ .role-model-move{ transition: all 600ms ease-out}
+ .role-model-enter-active{
+   transition: all 300ms ease-out;
+ }
+ .role-model-leave-active{
+   transition: all 200ms ease-out;
+   position: absolute;
+   z-index: 1;
+ }
+ .role-model-enter,
+ .role-model-leave-to{
+   opacity: 0;
+ }
+</style>
