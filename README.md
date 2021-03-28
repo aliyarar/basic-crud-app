@@ -1,5 +1,9 @@
 # basic-crud-app
 
+## Project Image
+![crud](https://user-images.githubusercontent.com/20185815/112752750-ca9c1f00-8fd4-11eb-9a14-057be9bca407.png)
+
+
 ## Project setup
 ```
 npm install
