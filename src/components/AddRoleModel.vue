@@ -40,7 +40,7 @@
         class="mb-2 mt-2"
       ></b-form-tags>
       <b-button @click="sendRoleModel()" block variant="outline-primary"
-        >Primary</b-button
+        >Add</b-button
       >
     </b-form>
   </div>
